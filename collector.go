@@ -24,16 +24,11 @@ var CollectorModule = fx.Module("otel(collector)",
 var collectorExportInterval = 3 * time.Second
 
 type (
-	OtelCollectorEndpoint   string
-	OtelCollectorIsInsecure bool
+	CollectorEndpoint   string
+	CollectorIsInsecure bool
 )
 
-const (
-	DevEndpoint   OtelCollectorEndpoint   = "127.0.0.1:4317"
-	DevIsInsecure OtelCollectorIsInsecure = true
-)
-
-func NewCollectorTraceProvider(ctx context.Context, lc fx.Lifecycle, endpoint OtelCollectorEndpoint, insecure OtelCollectorIsInsecure) (*trace.TracerProvider, error) {
+func NewCollectorTraceProvider(ctx context.Context, lc fx.Lifecycle, endpoint CollectorEndpoint, insecure CollectorIsInsecure) (*trace.TracerProvider, error) {
 	opts := []otlptracegrpc.Option{otlptracegrpc.WithEndpoint(string(endpoint))}
 	if insecure {
 		opts = append(opts, otlptracegrpc.WithInsecure())
@@ -54,7 +49,7 @@ func NewCollectorTraceProvider(ctx context.Context, lc fx.Lifecycle, endpoint Ot
 	return traceProvider, nil
 }
 
-func NewCollectorMeterProvider(ctx context.Context, lc fx.Lifecycle, endpoint OtelCollectorEndpoint, insecure OtelCollectorIsInsecure) (*metric.MeterProvider, error) {
+func NewCollectorMeterProvider(ctx context.Context, lc fx.Lifecycle, endpoint CollectorEndpoint, insecure CollectorIsInsecure) (*metric.MeterProvider, error) {
 	opts := []otlpmetricgrpc.Option{otlpmetricgrpc.WithEndpoint(string(endpoint))}
 	if insecure {
 		opts = append(opts, otlpmetricgrpc.WithInsecure())
@@ -73,7 +68,7 @@ func NewCollectorMeterProvider(ctx context.Context, lc fx.Lifecycle, endpoint Ot
 	return meterProvider, nil
 }
 
-func NewCollectorLogProvider(ctx context.Context, lc fx.Lifecycle, endpoint OtelCollectorEndpoint, insecure OtelCollectorIsInsecure) (*log.LoggerProvider, error) {
+func NewCollectorLogProvider(ctx context.Context, lc fx.Lifecycle, endpoint CollectorEndpoint, insecure CollectorIsInsecure) (*log.LoggerProvider, error) {
 	opts := []otlploggrpc.Option{otlploggrpc.WithEndpoint(string(endpoint))}
 	if insecure {
 		opts = append(opts, otlploggrpc.WithInsecure())
